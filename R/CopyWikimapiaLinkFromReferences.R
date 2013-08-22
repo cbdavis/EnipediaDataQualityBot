@@ -12,11 +12,10 @@ CopyWikimapiaLinkFromReferences <- function(endpoint, bot){
   queryResults = SPARQL(url=endpoint, query=queryString, format='csv', extra=list(format='text/csv'))
   df = queryResults$results
   
-  df$x = gsub("http://enipedia.tudelft.nl/wiki/", "", df$x)
-  df$template = "PowerplantTest"
-  df = df[,c("x", "template", "Wikimapia_link")]
-  
-  if (nrow(df) > 0){ #only update if something has been found
+  if (nrow(df) > 0){ #only update if something has been found  
+    df$x = gsub("http://enipedia.tudelft.nl/wiki/", "", df$x)
+    df$template = "PowerplantTest"
+    df = df[,c("x", "template", "Wikimapia_link")]
     errorDFEntries = writeDataFrameToPageTemplates(df, bot, editSummary="adding Wikimapia link found in the references")
   }
 }
