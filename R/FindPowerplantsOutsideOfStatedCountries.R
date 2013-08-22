@@ -2,7 +2,8 @@ FindPowerplantsOutsideOfStatedCountries <- function (endpoint) {
   ################ Check if power plants are outside of their stated countries ################
   
   # sourced from http://www.marineregions.org/downloads.php
-  borders = readOGR("/home/cbdavis/Desktop/svn/ChrisDavis/Enipedia/Integration/OpenStreetMap/EEZ_land_v1", "EEZ_land_v1")
+  # make sure that the EEZ_land_v1 folder is in the working directory
+  borders = readOGR("EEZ_land_v1", "EEZ_land_v1")
   
   queryString = "select * where {
                   ?x rdf:type cat:Powerplant . 
@@ -31,7 +32,7 @@ FindPowerplantsOutsideOfStatedCountries <- function (endpoint) {
   locs = which(df$isoCountry != df$country_ISO_Shapefile)
   
   # Do something to write this to the wiki
-  countryCodes = read.table("/home/cbdavis/Desktop/svn/ChrisDavis/Enipedia/Integration/OpenStreetMap/Enipedia_Country_ISO_Codes.csv", sep="\t", header=TRUE)
+  countryCodes = read.table("Enipedia_Country_ISO_Codes.csv", sep="\t", header=TRUE)
   
   df = sqldf("select *, countryCodes.name as countryNameFromShapefile from df JOIN countryCodes ON countryCodes.code == df.country_ISO_Shapefile")
   

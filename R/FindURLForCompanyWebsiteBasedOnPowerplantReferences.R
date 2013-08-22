@@ -23,7 +23,7 @@ FindURLForCompanyWebsiteBasedOnPowerplantReferences <- function () {
   
   #okToRun = FALSE
   #if (okToRun==TRUE){
-  #  df = read.table("/home/cbdavis/possibleCompanyWebsites.csv", header=TRUE)
+  #  df = read.table("possibleCompanyWebsites.csv", header=TRUE)
   #  writeDataFrameToPageTemplates(df, bot, "adding company website based on hand-filtered list generated from references in use by owned power plants")
   #}
 }
