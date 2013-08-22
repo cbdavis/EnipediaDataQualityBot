@@ -1,0 +1,10 @@
+Package: EnipediaDataQualityBot
+Type: Package
+Title: What the package does (short line)
+Version: 0.1
+Date: 2013-08-22
+Author: Chris Davis
+Maintainer: Chris Davis <c.b.davis@tudelft.nl>
+Description: Bot script for maintaining data on enipedia.tudelft.nl
+License: GPL2.0
+Depends: SPARQL, rgdal, reshape2, RSemanticMediaWikiBot
