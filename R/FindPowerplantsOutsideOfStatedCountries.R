@@ -6,7 +6,7 @@ FindPowerplantsOutsideOfStatedCountries <- function (endpoint, bot) {
   # represented in the shapefile
   # http://www.inside-r.org/packages/cran/rgeos/docs/gBuffer
   
-  # sourced from http://www.marineregions.org/downloads.php
+  # sourced from http://www.marineregions.org/sources.php#eez
   # make sure that the EEZ_land_v1 folder is in the working directory
   borders = readOGR("EEZ_land_v1", "EEZ_land_v1")
   
