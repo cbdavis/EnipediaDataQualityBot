@@ -1,6 +1,9 @@
 FindPowerplantsOutsideOfStatedCountries <- function (endpoint) {
   ################ Check if power plants are outside of their stated countries ################
   
+  # A buffer can be used to deal with power plants that might be on borders or the ocean
+  # http://www.inside-r.org/packages/cran/rgeos/docs/gBuffer
+  
   # sourced from http://www.marineregions.org/downloads.php
   # make sure that the EEZ_land_v1 folder is in the working directory
   borders = readOGR("EEZ_land_v1", "EEZ_land_v1")

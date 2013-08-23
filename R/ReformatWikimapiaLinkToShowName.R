@@ -21,7 +21,8 @@ ReformatWikimapiaLinkToShowName <- function (endpoint, bot) {
       url = paste("http://www.wikimapia.org/", wikimapiaID, sep="")
       response = getURL(url, .opts=curlOptions(followlocation=TRUE))
       doc = htmlParse(response, useInternalNodes=TRUE)
-      permalink <- unlist(getNodeSet(doc, "//div[@id='permalink']/a/@href", addFinalizer=FALSE))[[1]]
+      # the permalinks aren't always specified in consistently
+      permalink <- unlist(getNodeSet(doc, "//a[@title='Permalink to this place' or @class='permalink']/@href"))[[1]]
       df$newURL[i] = permalink
       Sys.sleep(5)
     }

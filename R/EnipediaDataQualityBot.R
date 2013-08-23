@@ -43,7 +43,4 @@ EnipediaDataQualityBot <- function (apiURL, username, password, endpoint) {
   # Using shapefiles of Economic Exclusive Zones, find all power plants whose coordinates
   # are outside of the country that they're stated as being in.
   FindPowerplantsOutsideOfStatedCountries(endpoint)
-  
-  rm(username)
-  rm(password)
 }
