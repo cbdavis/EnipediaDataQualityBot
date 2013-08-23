@@ -1,13 +1,13 @@
 #never ever convert strings to factors
 options(stringsAsFactors = FALSE)
 
-# this code is meant to run automatically to fix up common issues on Enipedia
-
 library(RSemanticMediaWikiBot)
 library(SPARQL)
 library(rgdal) # used to find if powerplants are within the shapefiles of their stated countries
 library(reshape2) # colsplit
+library(sqldf)
 
+# this is the main function
 EnipediaDataQualityBot <- function (apiURL, username, password, endpoint) {
   bot = initializeBot(apiURL)
   login(username, password, bot)
@@ -42,5 +42,5 @@ EnipediaDataQualityBot <- function (apiURL, username, password, endpoint) {
   
   # Using shapefiles of Economic Exclusive Zones, find all power plants whose coordinates
   # are outside of the country that they're stated as being in.
-  FindPowerplantsOutsideOfStatedCountries(endpoint)
+  FindPowerplantsOutsideOfStatedCountries(endpoint, bot)
 }
