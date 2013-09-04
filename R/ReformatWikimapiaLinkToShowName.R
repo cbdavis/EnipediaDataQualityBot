@@ -15,7 +15,6 @@ ReformatWikimapiaLinkToShowName <- function (endpoint, bot) {
   df$newURL = ""
   i = 1
   for (wikimapiaID in wikimapiaIdentifiers){
-    print(i)
     # see if the link needs to be fixed
     if (grepl("&show=", df$wikimapiaLink[i]) == TRUE){
       url = paste("http://www.wikimapia.org/", wikimapiaID, sep="")
