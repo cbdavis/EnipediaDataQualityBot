@@ -26,7 +26,9 @@ ReformatWikimapiaLinkToShowName <- function (endpoint, bot) {
       if (!is.null(permalink)){
         df$newURL[i] = permalink
         urlIndicesToFix = c(urlIndicesToFix, i)
-      } # else page probably couldn't be downloaded, try again later
+      } else { # else page probably couldn't be downloaded, try again later
+        warning(paste("Could not find the permalink for the Wikimapia page", url))  
+      }
       Sys.sleep(5)
     }
     i = i + 1
