@@ -15,15 +15,18 @@ ReformatWikimapiaLinkToShowName <- function (endpoint, bot) {
   df$newURL = ""
   i = 1
   for (wikimapiaID in wikimapiaIdentifiers){
+    print(i)
     # see if the link needs to be fixed
     if (grepl("&show=", df$wikimapiaLink[i]) == TRUE){
-      urlIndicesToFix = c(urlIndicesToFix, i)
       url = paste("http://www.wikimapia.org/", wikimapiaID, sep="")
       response = getURL(url, .opts=curlOptions(followlocation=TRUE))
       doc = htmlParse(response, useInternalNodes=TRUE)
-      # the permalinks aren't always specified in consistently
+      # the permalinks aren't always specified consistently
       permalink <- unlist(getNodeSet(doc, "//a[@title='Permalink to this place' or @class='permalink' or @class='btn permalink']/@href"))[[1]]
-      df$newURL[i] = permalink
+      if (!is.null(permalink)){
+        df$newURL[i] = permalink
+        urlIndicesToFix = c(urlIndicesToFix, i)
+      } # else page probably couldn't be downloaded, try again later
       Sys.sleep(5)
     }
     i = i + 1
