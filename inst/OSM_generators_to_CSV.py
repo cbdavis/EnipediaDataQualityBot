@@ -63,7 +63,7 @@ def processTags(tags):
 url = urllib2.urlopen("http://enipedia.tudelft.nl/OpenStreetMap/PlanetPowerGenerators.zip")
 zipfile = ZipFile(StringIO(url.read()))
 
-context = etree.iterparse(zipfile.open("PlanetPowerGenerators.osm"), events=('end',), tag='node')
+context = etree.iterparse(zipfile.open("PlanetPowerGenerators.osm"), events=('end',), tag=('node', 'way', 'relation'))
 
 # several different files are written to - the data will be joined together later in R code
 with open("nodes_and_tags.csv", "w") as f_nodes_and_tags:
