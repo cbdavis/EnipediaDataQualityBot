@@ -14,9 +14,14 @@ ReformatWikimapiaLinkToShowName <- function (endpoint, bot) {
   urlIndicesToFix = c()
   df$newURL = ""
   i = 1
-  for (wikimapiaID in wikimapiaIdentifiers){
+  for (wikimapiaLink in df$wikimapiaLink){
+    
+    test = wikimapiaLink
+    m <- gregexpr("/[0-9]+/", wikimapiaLink)
+    wikimapiaID = gsub("/", "", unlist(regmatches(test, m)))
+    
     # see if the link needs to be fixed
-    if (grepl("&show=", df$wikimapiaLink[i]) == TRUE){
+    if (grepl("&show=", wikimapiaLink) == TRUE){
       url = paste("http://www.wikimapia.org/", wikimapiaID, sep="")
       response = getURL(url, .opts=curlOptions(followlocation=TRUE))
       doc = htmlParse(response, useInternalNodes=TRUE)
@@ -24,6 +29,8 @@ ReformatWikimapiaLinkToShowName <- function (endpoint, bot) {
       permalink <- unlist(getNodeSet(doc, "//a[@title='Permalink to this place' or @class='permalink' or @class='btn permalink']/@href"))[[1]]
       if (!is.null(permalink)){
         df$newURL[i] = permalink
+        # print statement to make sure that we're replacing the right thing
+        #print(paste(wikimapiaLink, df$newURL[i], url))
         urlIndicesToFix = c(urlIndicesToFix, i)
       } else { # else page probably couldn't be downloaded, try again later
         warning(paste("Could not find the permalink for the Wikimapia page", url))  
