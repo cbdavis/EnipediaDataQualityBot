@@ -37,6 +37,9 @@ EnipediaDataQualityBot <- function (apiURL, username, password, endpoint) {
   # If no wikimapia link is given, check the references to see if one is there
   CopyWikimapiaLinkFromReferences(endpoint, bot)
   
+  # Make sure that the Industry About link contains all the entries found in the references
+  CopyIndustryAboutLinkFromReferences(endpoint, bot)
+  
   # fix wikimapia links, find the name of the object
   ReformatWikimapiaLinkToShowName(endpoint, bot)
   
