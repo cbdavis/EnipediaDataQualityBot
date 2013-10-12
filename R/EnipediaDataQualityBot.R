@@ -19,6 +19,9 @@ EnipediaDataQualityBot <- function (apiURL, username, password, endpoint) {
   # remove an energy company page if nothing links to it
   RemoveOldEnergyCompanyPages(endpoint, bot)
   
+  # if the primary fuel type is listed, but not the fuel type, fill it in with the value of the primary fuel type
+  FillInMissingFuelTypeIfPrimaryFuelTypeListed(endpoint, bot)
+  
   # if there is only one fuel type, then we can assume that it's also the primary fuel type
   FillInMissingPrimaryFuelTypeIfOnlySingleFuelTypeListed(endpoint, bot)
   
