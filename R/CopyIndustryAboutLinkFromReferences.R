@@ -20,11 +20,14 @@ CopyIndustryAboutLinkFromReferences <- function(endpoint, bot){
   plants = unique(df$x)
   for (plant in plants){
     locs = which(df$x == plant)
-    industryAboutLinks = c(df$reference[locs], df$IndustryAbout[locs])
-    industryAboutLinks = unique(sort(industryAboutLinks[which(industryAboutLinks != "")]))
-    if (length(industryAboutLinks) > 0){
-      industryAboutLinks = paste(industryAboutLinks, collapse=", ")
-      df_to_write = rbind(df_to_write, c(plant, "PowerplantTest", industryAboutLinks))
+    # make sure that the references aren't the same as the industryabout link, and that there's something to actually update
+    if(!setequal(df$reference[locs],df$IndustryAbout[locs])){
+      industryAboutLinks = c(df$reference[locs], df$IndustryAbout[locs])
+      industryAboutLinks = unique(sort(industryAboutLinks[which(industryAboutLinks != "")]))
+      if (length(industryAboutLinks) > 0){
+        industryAboutLinks = paste(industryAboutLinks, collapse=", ")
+        df_to_write = rbind(df_to_write, c(plant, "PowerplantTest", industryAboutLinks))
+      }
     }
   }
   
