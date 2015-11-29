@@ -18,7 +18,7 @@ FillInMissingPrimaryFuelTypeIfOnlySingleFuelTypeListed <- function (endpoint, bo
   df$x = gsub("_", " ", gsub("http://enipedia.tudelft.nl/wiki/", "", df$x))
   df$fuelType = gsub("_", " ", gsub("http://enipedia.tudelft.nl/wiki/", "", df$fuelType))
   
-  if (nrow(df)> 0){
+  if (nrow(df) > 0){
     for (i in c(1:nrow(df))){
       template = getTemplateByName("PowerplantTest", df$x[i], bot)[[1]]
       template$data$primary_fuel_type = df$fuelType[i]

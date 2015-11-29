@@ -6,39 +6,41 @@ ReformatWikimapiaLinkToShowName <- function (endpoint, bot) {
   queryResults = SPARQL(url=endpoint, query=queryString, format='csv', extra=list(format='text/csv'))
   df = queryResults$results
   
-  test = df$wikimapiaLink
-  m <- gregexpr("/[0-9]+/", test)
-  wikimapiaIdentifiers = gsub("/", "", unlist(regmatches(test, m)))
-  
   # pass the URL to Wikimapia, and see where the redirect leads
   urlIndicesToFix = c()
   df$newURL = ""
-  i = 1
+  
+  instancesToFix = which(grepl("lat=", df$wikimapiaLink))
+  df = df[instancesToFix,]
+  
+  i = 0
   for (wikimapiaLink in df$wikimapiaLink){
-    
-    test = wikimapiaLink
-    m <- gregexpr("/[0-9]+/", wikimapiaLink)
-    wikimapiaID = gsub("/", "", unlist(regmatches(test, m)))
-    
-    # see if the link needs to be fixed
-    if (grepl("&show=", wikimapiaLink) == TRUE){
-      url = paste("http://www.wikimapia.org/", wikimapiaID, sep="")
-      response = getURL(url, .opts=curlOptions(followlocation=TRUE))
-      doc = htmlParse(response, useInternalNodes=TRUE)
-      # the permalinks aren't always specified consistently
-      permalink <- unlist(getNodeSet(doc, "//a[@title='Permalink to this place' or @class='permalink' or @class='btn permalink']/@href"))[[1]]
-      if (!is.null(permalink)){
-        df$newURL[i] = permalink
-        # print statement to make sure that we're replacing the right thing
-        #print(paste(wikimapiaLink, df$newURL[i], url))
-        urlIndicesToFix = c(urlIndicesToFix, i)
-      } else { # else page probably couldn't be downloaded, try again later
-        warning(paste("Could not find the permalink for the Wikimapia page", url))  
-      }
-      Sys.sleep(5)
-    }
     i = i + 1
-  }
+    print(i)
+    m <- gregexpr("/[0-9]+/", wikimapiaLink)
+    wikimapiaID = gsub("/", "", unlist(regmatches(wikimapiaLink, m)))
+    
+    if (length(wikimapiaID) > 0){
+      # see if the link needs to be fixed
+      if (grepl("&show=", wikimapiaLink) == TRUE){
+        url = paste("http://www.wikimapia.org/", wikimapiaID, sep="")
+        response = getURL(url, .opts=curlOptions(followlocation=TRUE))
+        doc = htmlParse(response, useInternalNodes=TRUE)
+        # the permalinks aren't always specified consistently
+        permalink <- unlist(getNodeSet(doc, "//a[@title='Permalink to this place' or @class='permalink' or @class='btn permalink']/@href"))[[1]]
+        if (is.null(permalink)){ # try another method
+          permalink <- unlist(getNodeSet(doc, "//meta[@name='twitter:url']/@content"))[[1]]
+        }
+        if (!is.null(permalink)){
+          df$newURL[i] = permalink
+          urlIndicesToFix = c(urlIndicesToFix, i)
+        } else { # else page probably couldn't be downloaded, try again later
+          warning(paste("Could not find the permalink for the Wikimapia page", url))  
+        }
+        Sys.sleep(5)
+      }
+    }
+  }  
   
   df$x = gsub("http://enipedia.tudelft.nl/wiki/", "", df$x)
   df$wikimapiaLink = NULL

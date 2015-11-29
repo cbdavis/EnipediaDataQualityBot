@@ -1,6 +1,6 @@
 FixURLEncodingOfPowerplantCitiesAndStates <- function (endpoint, bot) {
   # fix up state and city encoding - "-2D" occasionally shows up
-  queryString = "select distinct(?x) where {
+  queryString = "select distinct(?x) from <http://enipedia.tudelft.nl/wiki/> where {
                   ?x rdf:type cat:Powerplant .
                   ?x ?y ?z . 
                   FILTER(regex(?z, \"-2D\", \"i\")) . 

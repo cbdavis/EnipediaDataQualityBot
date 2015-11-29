@@ -7,6 +7,9 @@ library(rgdal) # used to find if powerplants are within the shapefiles of their 
 library(reshape2) # colsplit
 library(sqldf)
 
+file.sources = list.files(pattern="*.R")
+sapply(file.sources,source,.GlobalEnv)
+
 # this is the main function
 EnipediaDataQualityBot <- function (apiURL, username, password, endpoint) {
   bot = initializeBot(apiURL)
